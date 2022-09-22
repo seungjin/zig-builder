@@ -1,10 +1,10 @@
-# Jammy (22.04) LTS - Last update : Wed, 21 Sep 2022 17:33:30 UTC / Revision: 20220921031234+9f13b9346b7c
+# Focal (20.04) LTS - Last update : Wed, 21 Sep 2022 20:30:34 UTC / Revision: 20220921052905+b9735db6464c
 
-deb [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy main
-deb-src [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy main
+deb [trusted=yes] http://apt.llvm.org/focal/ llvm-toolchain-focal main
+deb-src [trusted=yes] http://apt.llvm.org/focal/ llvm-toolchain-focal main
 # 14
-deb [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main
-deb-src [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-14 main
+deb [trusted=yes] http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main
+deb-src [trusted=yes] http://apt.llvm.org/focal/ llvm-toolchain-focal-14 main
 # 15
-deb [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main
-deb-src [trusted=yes] http://apt.llvm.org/jammy/ llvm-toolchain-jammy-15 main
+deb [trusted=yes] http://apt.llvm.org/focal/ llvm-toolchain-focal-15 main
+deb-src [trusted=yes] http://apt.llvm.org/focal/ llvm-toolchain-focal-15 main
