@@ -6,7 +6,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update -y
-      - run: sudo apt-get install -y ca-certificates apt-utils
+      - run: sudo apt-get install -y ca-certificates apt-utils lsb-release
       - name: Copy llvm source list
         run: |
           sudo cp ${{ github.workspace }}/llvm.source.list /etc/apt/sources.list.d/llvm.source.list
@@ -23,7 +23,7 @@ jobs:
       - name: Run cmake
         working-directory: ${{ github.workspace }}/zig/build
         run: cmake ..
-      - name: Creating swapfile
+      - name: Creating swapfile / Use swap
         run: |
           sudo fallocate -l 4GB /swapfile
           sudo chmod 600 /swapfile
@@ -38,7 +38,7 @@ jobs:
           ls ${{ github.workspace }}/zig/build/stage3/
 
       - name: Get built zig version
-        run: echo "::set-output name=zig_ver::${{ github.workspace }}/zig/build/stage3/bin/zig version"
+        run: echo '::set-output name=zig_ver::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)'
         id: zig_ver
 
       - name: zig_ver
@@ -52,3 +52,8 @@ jobs:
 
       - name: Copy results into release directory (lib)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}/lib/
+
+      - uses: actions/upload-artifact@v3
+        with:
+          name: zig-${{ steps.zig_ver.outputs.zig_ver }}
+          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}
