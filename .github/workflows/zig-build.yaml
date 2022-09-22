@@ -32,24 +32,23 @@ jobs:
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
-
       - name: Get built zig version
-        run: echo '::set-output name=zig_ver::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)'
+        run: echo '::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)'
         id: zig_ver
 
       - name: zig_ver
-        run: echo ${{ steps.zig_ver.outputs.zig_ver }}
+        run: echo "${{ steps.zig_ver.outputs.ZIG_VER }}"
 
-      - name: zig release directory
-        run: mkdir -p ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}
+      - name: Make zig release directory
+        run: mkdir -p ${{ github.workspace }}/zig-"${{ steps.zig_ver.outputs.ZIG_VER }}"
 
       - name: Copy results into release directory (bin)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/zig-"${{ steps.zig_ver.outputs.ZIG_VER }}"/
 
       - name: Copy results into release directory (lib)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}/lib/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-"${{ steps.zig_ver.outputs.ZIG_VER }}"/lib/
 
       - uses: actions/upload-artifact@v3
         with:
-          name: zig-${{ steps.zig_ver.outputs.zig_ver }}
-          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}
+          name: zig-"${{ steps.zig_ver.outputs.ZIG_VER }}"
+          path: ${{ github.workspace }}/zig-"${{ steps.zig_ver.outputs.ZIG_VER }}"
