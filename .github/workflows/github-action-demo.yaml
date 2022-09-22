@@ -18,7 +18,7 @@ jobs:
         with:
           repository: ziglang/zig
           path: zig
-          ref: main
+          ref: master
 
       - name: List files in the repository
         run: |
