@@ -41,23 +41,15 @@ jobs:
       - name: Get built zig version
         run: echo ::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)
         id: zig_ver
-
-      - name: zig_ver
-        run: echo ${{ steps.zig_ver.outputs.ZIG_VER }}
-
       - name: Make zig release directory
         run: mkdir -p ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
-
       - name: Copy results into release directory (bin)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/
-
       - name: Copy results into release directory (lib)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/lib/
-
       - name: tar/gz outcomes
         run: tar -czf zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
-
       - uses: actions/upload-artifact@v3
         with:
-          name: zig-${{ steps.zig_ver.outputs.ZIG_VER }}
+          name: zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
           path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
