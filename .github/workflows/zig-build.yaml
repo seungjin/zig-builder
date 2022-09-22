@@ -18,7 +18,7 @@ jobs:
           sudo cp ${{ github.workspace }}/llvm.source.list /etc/apt/sources.list.d/llvm.source.list
       - run: sudo apt-get update -y
       - run: sudo apt-get dist-upgrade -y
-      - run: sudo apt install -y git build-essential cmake llvm-15 llvm-15-dev lld lld-15 liblld-15-dev clang-15 libclang-15-dev zlib1g-dev
+      - run: sudo apt install -y git build-essential cmake llvm-$llvmVer llvm-$llvmVer-dev lld lld-$llvmVer liblld-$llvmVer-dev clang-$llvmVer libclang-$llvmVer-dev zlib1g-dev
       - uses: actions/checkout@master
         with:
           repository: ziglang/zig
