@@ -48,8 +48,8 @@ jobs:
       - name: Copy results into release directory (lib)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/lib/
       - name: tar/gz outcomes
-        run: tar -czf zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
+        run: tar -cvf zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
       - uses: actions/upload-artifact@v3
         with:
-          name: zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
-          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
+          name: zig-${{ steps.zig_ver.outputs.ZIG_VER }}
+          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar
