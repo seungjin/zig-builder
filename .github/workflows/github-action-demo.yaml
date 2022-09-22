@@ -2,7 +2,7 @@ name: Zig Builder
 on: [push, workflow_dispatch]
 jobs:
   Zig-Latest-Build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v2
       - run: sudo apt-get update -y
@@ -18,7 +18,6 @@ jobs:
           repository: ziglang/zig
           path: zig
           ref: master
-          depth: 1
       - name: Make build directory under zig
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
@@ -27,9 +26,23 @@ jobs:
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
+
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}/zig/build/stage3/
+
       - name: Get built zig version
-        run: echo "::set-output name=ver::${{ github.workspace }}/zig/build/stage3/bin/zig version"
+        run: echo "::set-output name=zig_ver::${{ github.workspace }}/zig/build/stage3/bin/zig version"
         id: zig_ver
+
+      - name: zig_ver
+        run: echo ${{ steps.zig_ver.outputs.zig_ver }}
+
+      - name: zig release directory
+        run: mkdir -p ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}
+
+      - name: Copy results into release directory (bin)
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}/
+
+      - name: Copy results into release directory (lib)
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.zig_ver }}/lib/
