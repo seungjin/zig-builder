@@ -23,6 +23,12 @@ jobs:
       - name: Run cmake
         working-directory: ${{ github.workspace }}/zig/build
         run: cmake ..
+      - name: Creating swapfile
+        run: |
+          sudo fallocate -l 4GB /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
