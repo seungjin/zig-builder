@@ -13,13 +13,11 @@ jobs:
       - run: sudo apt-get update -y
       - run: sudo apt-get dist-upgrade -y
       - run: sudo apt install -y build-essential cmake llvm-15 llvm-15-dev lld lld-15 liblld-15-dev clang-15 libclang-15-dev zlib1g-dev git
-
       - uses: actions/checkout@master
         with:
           repository: ziglang/zig
           path: zig
           ref: master
-
       - name: List files in the repository
         run: |
           ls ${{ github.workspace }}/zig
@@ -31,14 +29,7 @@ jobs:
         working-directory: ${{ github.workspace }}/zig/build
         run: cmake ..
 
-      - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
-      - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
-      - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
-      - name: Check out repository code
-        uses: actions/checkout@v3
-      - run: echo "💡 The ${{ github.repository }} repository has been cloned to the runner."
-      - run: echo "🖥️ The workflow is now ready to test your code on the runner."
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
-      - run: echo "🍏 This job's status is ${{ job.status }}."
+      - name: Make install
+        working-directory: ${{ github.workspace }}/zig/build
+        run: make install
+
