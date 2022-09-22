@@ -7,15 +7,17 @@ jobs:
       - uses: actions/checkout@v2
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y ca-certificates apt-utils
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
       - name: Copy llvm source list
         run: |
           sudo cp ${{ github.workspace }}/llvm.source.list /etc/apt/sources.list.d/llvm.source.list
-      - run: apt-get update -y
-      - run: apt-get dist-upgrade -y
-      - run: apt install -y build-essential cmake llvm-15 llvm-15-dev lld lld-15 liblld-15-dev clang-15 libclang-15-dev zlib1g-dev git
+      - run: sudo apt-get update -y
+      - run: sudo apt-get dist-upgrade -y
+      - run: sudo apt install -y build-essential cmake llvm-15 llvm-15-dev lld lld-15 liblld-15-dev clang-15 libclang-15-dev zlib1g-dev git
+      - uses: action/checkout@main
+        with:
+          name: ziglang/git
+          ref: refs/heads/main
+
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
