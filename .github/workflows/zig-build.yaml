@@ -39,7 +39,7 @@ jobs:
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
       - name: Get built zig version
-        run: echo "::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)"
+        run: echo ::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)
         id: zig_ver
 
       - name: zig_ver
