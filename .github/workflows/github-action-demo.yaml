@@ -33,9 +33,3 @@ jobs:
       - name: Get built zig version
         run: echo "::set-output name=ver::${{ github.workspace }}/zig/build/stage3/bin/zig version"
         id: zig_ver
-
-      - name: Build zig
-        uses: actions/upload-arfifact@v2
-        with:
-          name: zig
-          path: ${{ github.workspace }}/zig/build/stage3/
