@@ -1,9 +1,17 @@
 name: GitHub Actions Demo
-on: [commit]
+on: [push]
 jobs:
   Explore-GitHub-Actions:
-    runs-on: debian-latest
+    runs-on: ubuntu-latest
     steps:
+      - run: apt-get update -y
+      - run: apt-get install -y ca-certificates apt-utils
+      - name: Copy llvm source list
+        run: |
+          cp llvm.source.list /etc/apt/sources.list.d/llvm.source.list
+      - run: apt-get update -y
+      - run: apt-get dist-upgrade -y
+      - run: apt install -y build-essential cmake llvm-15 llvm-15-dev lld lld-15 liblld-15-dev clang-15 libclang-15-dev zlib1g-dev git
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
