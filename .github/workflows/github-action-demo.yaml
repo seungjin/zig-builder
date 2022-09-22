@@ -1,7 +1,7 @@
-name: GitHub Actions Demo
+name: Zig Builder
 on: [push, workflow_dispatch]
 jobs:
-  Explore-GitHub-Actions:
+  Zig-Latest-Build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -16,7 +16,7 @@ jobs:
 
       - uses: actions/checkout@master
         with:
-          repository: github.com/ziglang/zig
+          repository: ziglang/zig
           path: zig
           ref: main
 
