@@ -1,5 +1,9 @@
 name: Zig Builder
-on: [push, workflow_dispatch]
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 */12 * * *"
 jobs:
   Zig-Latest-Build:
     runs-on: ubuntu-22.04
