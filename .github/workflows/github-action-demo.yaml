@@ -16,8 +16,9 @@ jobs:
 
       - uses: actions/checkout@master
         with:
-          name: ziglang/zig
-          ref: refs/heads/main
+          repository: github.com/ziglang/zig
+          path: zig
+          ref: main
 
       - name: List files in the repository
         run: |
