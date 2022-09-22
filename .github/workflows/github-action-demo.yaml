@@ -22,7 +22,14 @@ jobs:
 
       - name: List files in the repository
         run: |
-          ls ${{ github.workspace }}
+          ls ${{ github.workspace }}/zig
+
+      - name: Make build directory under zig
+        run: mkdir ${{ github.workspace }}/zig/build
+
+      - name: Run cmake
+        working-directory: ${{ github.workspace }}/zig/build
+        run: cmake ..
 
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
