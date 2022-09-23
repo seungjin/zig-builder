@@ -56,7 +56,8 @@ jobs:
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}/lib/
       - name: tar/gz outcomes
         run: tar -czvf ${{ steps.zig_ver.outputs.RELEASE }}.tar.gz ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}
-      - uses: actions/upload-artifact@v3
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v3.1.0
         with:
           name: ${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
           path: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
@@ -68,7 +69,6 @@ jobs:
         with:
           tag_name: ${{ steps.zig_ver.outputs.RELEASE }}
           release_name: Release ${{ steps.zig_ver.outputs.RELEASE }}
-          body_path: zigling/zig/README.md
           draft: false
           prerelease: false
           repo: ziglang/zig
