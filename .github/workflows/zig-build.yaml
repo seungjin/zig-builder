@@ -65,7 +65,7 @@ jobs:
         uses: ncipollo/release-action@v1.10.0
         id: create_release
         with:
-          torken: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           name: Release ${{ steps.zig_ver.outputs.RELEASE }}
           tag: ${{ steps.zig_ver.outputs.RELEASE }}
           artifacts: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
