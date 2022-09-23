@@ -50,6 +50,8 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: echo ::set-output name=EXIST::$(git tag -l zig-${{ steps.zig_ver_check.outputs.TAG }} | wc -l)
         id: build_tag_check
+      - name: ncipo
+        run: echo ${{ steps.build_tag_check.outputs.EXIST }}
       - name: foo
         if: steps.build_tag_check.outputs.EXIST > 0
         run: exit 0
