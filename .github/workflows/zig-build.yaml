@@ -48,7 +48,7 @@ jobs:
         run: echo ${{ steps.build_tag_check.outputs.EXIST }}
       - name: foo
         if: steps.build_tag_check.outputs.EXIST > 0
-        run: exit 0
+        run: exit 1
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
