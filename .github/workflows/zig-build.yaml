@@ -23,6 +23,10 @@ jobs:
           repository: ziglang/zig
           path: zig
           ref: master
+      - name: zig git hash
+        run: ::set-output name=GIT_HASH::$(git rev-parse --short=9 HEAD)
+        working-directory: ${{ github.workspace }}/zig/
+        id: zig_source
       - name: Make build directory under zig
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
@@ -51,15 +55,15 @@ jobs:
       - uses: actions/upload-artifact@v3
         with:
           name: zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
-          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
+          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}tar.gz
       - name: release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.zig_ver.outputs.ZIG_VER }}
-          release_name: Release ${{ steps.zig_ver.outputs.ZIG_VER }}
+          tag_name: ${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
+          release_name: Release ${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
           body: |
             Changes in this Release
             - First Change
