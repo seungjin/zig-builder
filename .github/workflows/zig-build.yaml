@@ -45,7 +45,8 @@ jobs:
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
         #working-directory: ${{ github.workspace }}/zig/build
-        run: cd ${{ github.workspace }}/zig/build/ && cmake ..
+        #run: cd ${{ github.workspace }}/zig/build/ && cmake ..
+        run: cmake -S ${{ github.workspace }}/zig -B ${{ github.workspace }}/zig/build
       - name: Cat build/config.zig
         run: cat ${{ github.workspace }}/zig/build/config.zig
       - name: Make install
