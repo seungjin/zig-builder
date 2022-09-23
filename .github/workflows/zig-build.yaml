@@ -30,10 +30,8 @@ jobs:
         working-directory: ${{ github.workspace }}/zig/
         id: zig_source
       - name: Check source logs since 8 hours ago
-        run: echo ::set-output name=NEW_CODE::$(git log --pretty=oneline --since "$(date -d '12 hour ago' "+%Y-%m-%d %H:%M:%S")" | wc -l)
+        run: echo ::set-output name=NEW_CODE::$(git log --pretty=oneline --since "$(date -d '8 hour ago' "+%Y-%m-%d %H:%M:%S")" | wc -l)
         id: zig_check_code
-      - name: Check new source exist
-        run: echo ${{ steps.zig_check_code.outputs.NEW_CODE }}
       - name: Stop if there is no code change
         if: steps.zig_check_code.outputs.NEW_CODE < 1
         run: exit 1
@@ -81,4 +79,4 @@ jobs:
           artifactContentType: "application/gzip"
           draft: false
           prerelease: false
-          repo: ${{ github.workspace }}/zig
+          repo: ziglang/zig
