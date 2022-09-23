@@ -18,9 +18,6 @@ jobs:
           sudo mkswap /swapfile
           sudo swapon /swapfile
       - uses: actions/checkout@v2.4.2
-      - name: List files in the repository
-        run: |
-          ls ${{ github.workspace }}
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y ca-certificates apt-utils lsb-release
       - name: Copy llvm source list
@@ -35,12 +32,6 @@ jobs:
           path: zig
           ref: master
           fetch-depth: "0"
-      - name: Check source logs since 8 hours ago
-        run: echo ::set-output name=NEW_CODE::$(git log --pretty=oneline --since "$(date -d '8 hour ago' "+%Y-%m-%d %H:%M:%S")" | wc -l)
-        id: zig_check_code
-      - name: Stop if there is no code change
-        if: steps.zig_check_code.outputs.NEW_CODE < 1
-        run: exit 0
       - name: Make build directory under zig
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
@@ -50,8 +41,8 @@ jobs:
         run: echo ::set-output name=TAG::$(cat ${{ github.workspace }}/zig/build/config.h | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"')
         id: zig_ver_check
       - name: foo0
-        working-directory: ${{ github.workspace }}/
-        run: echo ::set-output name=EXIST::$(git tag -l zig-${{ steps.zig_ver_check.outputs.TAG }} | wc -l)
+        working-directory: ${{ github.workspace }}
+        run: echo ::set-output name=EXIST::$(echo git tag -l zig-${{ steps.zig_ver_check.outputs.TAG }} | wc -l)
         id: build_tag_check
       - name: ncipo
         run: echo ${{ steps.build_tag_check.outputs.EXIST }}
