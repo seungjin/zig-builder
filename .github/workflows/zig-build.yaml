@@ -1,10 +1,5 @@
 name: Zig Builder
-on:
-  push:
-    branches:
-      - main
-  schedule:
-    - cron: "0 */12 * * *"
+on: push
 env:
   llvmVer: 15
 jobs:
