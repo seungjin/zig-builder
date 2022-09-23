@@ -11,6 +11,12 @@ jobs:
   Zig-Latest-Build:
     runs-on: ubuntu-22.04
     steps:
+      - name: Creating swapfile / Use swap
+        run: |
+          sudo fallocate -l 4GB /swapfile
+          sudo chmod 600 /swapfile
+          sudo mkswap /swapfile
+          sudo swapon /swapfile
       - uses: actions/checkout@v2.4.2
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y ca-certificates apt-utils lsb-release
@@ -40,12 +46,8 @@ jobs:
       - name: Run cmake
         working-directory: ${{ github.workspace }}/zig/build
         run: cmake ..
-      - name: Creating swapfile / Use swap
-        run: |
-          sudo fallocate -l 4GB /swapfile
-          sudo chmod 600 /swapfile
-          sudo mkswap /swapfile
-          sudo swapon /swapfile
+      - name: Cat build/config.zig
+        run: cat ${{ github.workspace }}/zig/build/config.zig
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
