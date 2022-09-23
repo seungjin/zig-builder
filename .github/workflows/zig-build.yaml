@@ -1,5 +1,5 @@
 name: Zig Builder
-on: push
+on: [push]
 env:
   llvmVer: 15
 jobs:
