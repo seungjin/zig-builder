@@ -67,9 +67,7 @@ jobs:
         with:
           tag_name: ${{ THIS_RELEASE }}
           release_name: Release ${{ THIR_RELEASE }}
-          body: |
-            Changes in this Release
-            - First Change
-            - Second Change
+          body_path: zig/README.md
           draft: false
           prerelease: false
+          repo: ziglang/zig
