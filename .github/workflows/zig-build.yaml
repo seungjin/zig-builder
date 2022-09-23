@@ -34,9 +34,9 @@ jobs:
         id: zig_check_code
       - name: Check new source exist
         run: echo ${{ steps.zig_check_code.outputs.NEW_CODE }}
-      #- name: Stop if there is no code change
-      #  if: zig_check_code.outputs.NEW_CODE < 1
-      #
+      - name: Stop if there is no code change
+        if: zig_check_code.outputs.NEW_CODE < 1
+        run: exit 1
       - name: Make build directory under zig
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
