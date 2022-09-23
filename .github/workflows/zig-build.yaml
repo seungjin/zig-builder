@@ -32,10 +32,6 @@ jobs:
           path: zig
           ref: master
           fetch-depth: "0"
-      - name: zig git hash
-        run: echo ::set-output name=GIT_HASH::$(git rev-parse --short=9 HEAD)
-        working-directory: ${{ github.workspace }}/zig/
-        id: zig_source
       - name: Check source logs since 8 hours ago
         run: echo ::set-output name=NEW_CODE::$(git log --pretty=oneline --since "$(date -d '8 hour ago' "+%Y-%m-%d %H:%M:%S")" | wc -l)
         id: zig_check_code
@@ -48,8 +44,6 @@ jobs:
         #working-directory: ${{ github.workspace }}/zig/build
         #run: cd ${{ github.workspace }}/zig/build/ && cmake ..
         run: cmake -S ${{ github.workspace }}/zig -B ${{ github.workspace }}/zig/build
-      - name: Cat build/config.zig
-        run: cat ${{ github.workspace }}/zig/build/config.zig
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
@@ -58,28 +52,27 @@ jobs:
           echo ::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)
         id: zig_ver
       - name: Make zig release directory
-        run: mkdir -p ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}
+        run: mkdir -p ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
       - name: Copy results into release directory (bin)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/
       - name: Copy results into release directory (lib)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}/lib/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/lib/
       - name: tar/gz outcomes
-        run: tar -czvf ${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz ./${{ steps.zig_ver.outputs.RELEASE }}
+        run: tar -czvf ${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz ./zig-${{ steps.zig_ver.outputs.RELEASE }}
         working-directory: ${{ github.workspace }}
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: ${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
-          path: ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
+          name: zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
+          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         id: create_release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Release ${{ steps.zig_ver.outputs.ZIG_VER }}
-          tag: ${{ steps.zig_ver.outputs.ZIG_VER }}
-          artifacts: ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
+          name: Release zig-${{ steps.zig_ver.outputs.ZIG_VER }}
+          tag: zig-${{ steps.zig_ver.outputs.ZIG_VER }}
+          artifacts: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
           artifactContentType: "application/gzip"
           draft: false
           prerelease: false
-          #repo: ziglang/zig
