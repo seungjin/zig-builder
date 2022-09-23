@@ -41,19 +41,25 @@ jobs:
       - name: Get built zig version
         run: echo ::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)
         id: zig_ver
-      - name: Set Release name (env.THIS_RELEASE)
+      - name: Make zig release directory
         env:
           THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
-        run: echo ${{ env.THIR_RELEASE }}
-      - name: Make zig release directory
         run: mkdir -p ${{ github.workspace }}/${{ env.THIS_RELEASE }}
       - name: Copy results into release directory (bin)
+        env:
+          THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/${{ env.THIS_RELEASE }}/
       - name: Copy results into release directory (lib)
+        env:
+          THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ env.THIS_RELEASE }}/lib/
       - name: tar/gz outcomes
+        env:
+          THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
         run: tar -czvf ${{ env.THIS_RELEASE }}.tar.gz ${{ github.workspace }}/${{ env.THIS_RELEASE }}
       - uses: actions/upload-artifact@v3
+        env:
+          THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
         with:
           name: ${{ env.THIS_RELEASE }}.tar.gz
           path: ${{ github.workspace }}/${{ env.THIS_RELEASE }}.tar.gz
@@ -62,9 +68,11 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+          THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
+
         with:
           tag_name: ${{ env.THIS_RELEASE }}
-          release_name: Release ${{ env.THIR_RELEASE }}
+          release_name: Release ${{ env.THIS_RELEASE }}
           body_path: zig/README.md
           draft: false
           prerelease: false
