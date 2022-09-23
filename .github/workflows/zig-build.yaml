@@ -52,30 +52,29 @@ jobs:
       - name: Get built zig version
         run: |
           echo ::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)
-          echo ::set-output name=RELEASE::zig-$(${{ github.workspace }}/zig/build/stage3/bin/zig version)-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
         id: zig_ver
       - name: Make zig release directory
-        run: mkdir -p ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}
+        run: mkdir -p ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}
       - name: Copy results into release directory (bin)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}/
       - name: Copy results into release directory (lib)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}/lib/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}/lib/
       - name: tar/gz outcomes
-        run: tar -czvf ${{ steps.zig_ver.outputs.RELEASE }}.tar.gz ./${{ steps.zig_ver.outputs.RELEASE }}
+        run: tar -czvf ${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz ./${{ steps.zig_ver.outputs.RELEASE }}
         working-directory: ${{ github.workspace }}
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
-          name: ${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
-          path: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
+          name: ${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
+          path: ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         id: create_release
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Release ${{ steps.zig_ver.outputs.RELEASE }}
-          tag: ${{ steps.zig_ver.outputs.RELEASE }}
-          artifacts: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
+          name: Release ${{ steps.zig_ver.outputs.ZIG_VER }}
+          tag: ${{ steps.zig_ver.outputs.ZIG_VER }}
+          artifacts: ${{ github.workspace }}/${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
           artifactContentType: "application/gzip"
           draft: false
           prerelease: false
