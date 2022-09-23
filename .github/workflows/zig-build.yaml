@@ -41,10 +41,10 @@ jobs:
       - name: Get built zig version
         run: echo ::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)
         id: zig_ver
-      - name: Set Release name
+      - name: Set Release name (env.THIS_RELEASE)
         env:
           THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
-        run: echo "hello"
+        run: echo ${{ env.THIR_RELEASE }}
       - name: Make zig release directory
         run: mkdir -p ${{ github.workspace }}/${{ env.THIS_RELEASE }}
       - name: Copy results into release directory (bin)
