@@ -31,6 +31,7 @@ jobs:
           repository: ziglang/zig
           path: zig
           ref: master
+          fetch-depth: "0"
       - name: zig git hash
         run: echo ::set-output name=GIT_HASH::$(git rev-parse --short=9 HEAD)
         working-directory: ${{ github.workspace }}/zig/
