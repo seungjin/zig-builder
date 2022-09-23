@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "0 21 * * *"
+    - cron: "0 22 * * *"
 env:
   llvmVer: 15
 jobs:
@@ -70,6 +70,6 @@ jobs:
           tag: ${{ steps.zig_ver.outputs.RELEASE }}
           artifacts: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
           artifactContentType: "application/gzip"
-          repo: ziglang/zig
+          repo: zig
           draft: false
           prerelease: false
