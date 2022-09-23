@@ -63,7 +63,8 @@ jobs:
       - name: Copy results into release directory (lib)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}/lib/
       - name: tar/gz outcomes
-        run: tar -czvf ${{ steps.zig_ver.outputs.RELEASE }}.tar.gz ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}
+        run: tar -czvf ${{ steps.zig_ver.outputs.RELEASE }}.tar.gz ./${{ steps.zig_ver.outputs.RELEASE }}
+        working-directory: ${{ github.workspace }}
       - name: Upload a Build Artifact
         uses: actions/upload-artifact@v3.1.0
         with:
