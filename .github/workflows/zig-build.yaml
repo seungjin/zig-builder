@@ -40,10 +40,11 @@ jobs:
         working-directory: ${{ github.workspace }}
         run: echo ::set-output name=TAG::$(cat ${{ github.workspace }}/zig/build/config.h | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"')
         id: zig_config_check
-      - name: foo0
+      - name: Check zig configured version is alredy in tags
         working-directory: ${{ github.workspace }}
         run: echo ::set-output name=EXIST::$(echo git tag -l zig-${{ steps.zig_config_check.outputs.TAG }} | wc -l)
         id: build_tag_check
+      - run: echo ${{ steps.build_tag_check.outputs.EXIST }}
       - name: Intentionally Exit(1) this job if there is already tag in it
         if: steps.build_tag_check.outputs.EXIST > 0
         run: exit 1
