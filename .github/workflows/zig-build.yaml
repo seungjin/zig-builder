@@ -48,23 +48,23 @@ jobs:
       - name: Make zig release directory
         run: mkdir -p ${{ github.workspace }}/${{ env.THIS_RELEASE }}
       - name: Copy results into release directory (bin)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/${{ THIS_RELEASE }}/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/${{ env.THIS_RELEASE }}/
       - name: Copy results into release directory (lib)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ THIS_RELEASE }}/lib/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ env.THIS_RELEASE }}/lib/
       - name: tar/gz outcomes
-        run: tar -czvf ${{ THIS_RELEASE }}.tar.gz ${{ github.workspace }}/${{ THIS_RELEASE }}
+        run: tar -czvf ${{ THIS_RELEASE }}.tar.gz ${{ github.workspace }}/${{ env.THIS_RELEASE }}
       - uses: actions/upload-artifact@v3
         with:
-          name: ${{ THIS_RELEASE }}.tar.gz
-          path: ${{ github.workspace }}/${{ THIS_RELEASE }}.tar.gz
+          name: ${{ env.THIS_RELEASE }}.tar.gz
+          path: ${{ github.workspace }}/${{ env.THIS_RELEASE }}.tar.gz
       - name: release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ THIS_RELEASE }}
-          release_name: Release ${{ THIR_RELEASE }}
+          tag_name: ${{ env.THIS_RELEASE }}
+          release_name: Release ${{ env.THIR_RELEASE }}
           body_path: zig/README.md
           draft: false
           prerelease: false
