@@ -11,7 +11,7 @@ jobs:
   Zig-Latest-Build:
     runs-on: ubuntu-22.04
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v2.4.2
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y ca-certificates apt-utils lsb-release
       - name: Copy llvm source list
@@ -20,7 +20,7 @@ jobs:
       - run: sudo apt-get update -y
       - run: sudo apt-get dist-upgrade -y
       - run: sudo apt install -y git build-essential cmake llvm-$llvmVer llvm-$llvmVer-dev lld lld-$llvmVer liblld-$llvmVer-dev clang-$llvmVer libclang-$llvmVer-dev zlib1g-dev
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v2.4.2
         with:
           repository: ziglang/zig
           path: zig
