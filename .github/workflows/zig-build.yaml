@@ -61,14 +61,17 @@ jobs:
         with:
           name: ${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
           path: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
-      - name: release
+      - name: Create Release
+        uses: ncipollo/release-action@v1.10.0
         id: create_release
-        uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.zig_ver.outputs.RELEASE }}
-          release_name: Release ${{ steps.zig_ver.outputs.RELEASE }}
+          torken: ${{ secrets.GITHUB_TOKEN }}
+          name: Release ${{ steps.zig_ver.outputs.RELEASE }}
+          tag: ${{ steps.zig_ver.outputs.RELEASE }}
+          artifacts: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
+          artifactContentType: "tar.gz"
+          repo: ziglang/zig
           draft: false
           prerelease: false
-          repo: ziglang/zig
