@@ -18,6 +18,9 @@ jobs:
           sudo mkswap /swapfile
           sudo swapon /swapfile
       - uses: actions/checkout@v2.4.2
+      - name: List files in the repository
+        run: |
+          ls ${{ github.workspace }}
       - run: sudo apt-get update -y
       - run: sudo apt-get install -y ca-certificates apt-utils lsb-release
       - name: Copy llvm source list
@@ -47,7 +50,7 @@ jobs:
         run: echo ::set-output name=TAG::$(cat ${{ github.workspace }}/zig/build/config.h | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"')
         id: zig_ver_check
       - name: foo0
-        working-directory: ${{ github.workspace }}
+        working-directory: ${{ github.workspace }}/
         run: echo ::set-output name=EXIST::$(git tag -l zig-${{ steps.zig_ver_check.outputs.TAG }} | wc -l)
         id: build_tag_check
       - name: ncipo
