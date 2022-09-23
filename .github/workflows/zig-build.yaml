@@ -31,9 +31,9 @@ jobs:
         id: zig_source
       - name: Check source logs since 8 hours ago
         run: echo ::set-output name=NEW_CODE ::$(date -d '8 hour ago' "+%Y-%m-%d %H:%M:%S"git log --pretty=oneline --since "$(date -d '12 hour ago' "+%Y-%m-%d %H:%M:%S")" | wc -l
-        id: zig_source
+        id: zig_check_code
       - name: Check new source exist
-        run: echo zig_source.outputs.NEW_CODE
+        run: echo zig_check_code.outputs.NEW_CODE
       - name: Make build directory under zig
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
