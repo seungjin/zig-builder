@@ -1,5 +1,8 @@
-name: Zig-Builder
+name: Zig Builder
 on:
+  push:
+    branches:
+      - main
   schedule:
     - cron: "30 5,17 * * *"
 env:
