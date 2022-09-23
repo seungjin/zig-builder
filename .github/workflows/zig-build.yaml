@@ -1,10 +1,9 @@
 name: Zig Builder
-
-on: [push]
-
+on:
+  schedule:
+    - cron: "0 0 * * *"
 env:
   llvmVer: 15
-
 jobs:
   Zig-Latest-Build:
     runs-on: ubuntu-22.04
@@ -63,8 +62,6 @@ jobs:
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-          THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
-
         with:
           tag_name: ${{ steps.zig_ver.outputs.RELEASE }}
           release_name: Release ${{ steps.zig_ver.outputs.RELEASE }}
