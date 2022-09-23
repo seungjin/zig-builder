@@ -44,7 +44,7 @@ jobs:
         run: cmake -S ${{ github.workspace }}/zig -B ${{ github.workspace }}/zig/build
       - name: Get zig version
         working-directory: ${{ github.workspace }}
-        run: echo ::set-output name=TAG::$(cat ${{ github.workspace }}/zig/build/config.h) | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"')
+        run: echo ::set-output name=TAG::$(cat ${{ github.workspace }}/zig/build/config.h | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"')
         id: zig_ver_check
       - name: foo0
         working-directory: ${{ github.workspace }}
@@ -62,7 +62,7 @@ jobs:
         id: zig_ver
       - name: Make zig release directory
         run: mkdir -p ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
-      - name: Copy results into release directory (bin)
+      - name: Copy resulzig_ver_checkts into release directory (bin)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/
       - name: Copy results into release directory (lib)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/lib/
