@@ -37,14 +37,18 @@ jobs:
         id: zig_check_code
       - name: Stop if there is no code change
         if: steps.zig_check_code.outputs.NEW_CODE < 1
-        run: exit 1
+        run: exit 0
       - name: Make build directory under zig
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
         run: cmake -S ${{ github.workspace }}/zig -B ${{ github.workspace }}/zig/build
       - name: Get zig version
-        run: cat ${{ github.workspace }}/zig/build/config.h | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"'
-
+        working-directory: ${{ github.workspace }}
+        run: echo ::set-output name=TAG::$(git tag | grep $(cat ${{ github.workspace }}/zig/build/config.h) | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"') | wc -l
+        id: zig_ver_check
+      - name: foo
+        if: steps.zig_ver_check.outputs.TAG > 0
+        run: exit 0
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
         run: make install
