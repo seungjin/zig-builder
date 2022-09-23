@@ -44,10 +44,14 @@ jobs:
         run: cmake -S ${{ github.workspace }}/zig -B ${{ github.workspace }}/zig/build
       - name: Get zig version
         working-directory: ${{ github.workspace }}
-        run: echo ::set-output name=TAG::$(git tag | grep $(cat ${{ github.workspace }}/zig/build/config.h) | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"') | wc -l
+        run: echo ::set-output name=TAG::$(cat ${{ github.workspace }}/zig/build/config.h) | grep VERSION_STRING | cut -d' ' -f3 | tr -d '"')
         id: zig_ver_check
+      - name: foo0
+        working-directory: ${{ github.workspace }}
+        run: echo ::set-output name=EXIST::$(git tag -l ${{ steps.zig_ver_check.outputs.TAG }} | wc -l)
+        id: build_tag_check
       - name: foo
-        if: steps.zig_ver_check.outputs.TAG > 0
+        if: steps.build_tag_check.outputs.EXIST > 0
         run: exit 0
       - name: Make install
         working-directory: ${{ github.workspace }}/zig/build
