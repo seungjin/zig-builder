@@ -44,6 +44,7 @@ jobs:
       - name: Set Release name
         env:
           THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
+        run: echo ${{ THIS_RELEASE }}
       - name: Make zig release directory
         run: mkdir -p ${{ github.workspace }}/${{ THIS_RELEASE }}
       - name: Copy results into release directory (bin)
