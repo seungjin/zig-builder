@@ -79,4 +79,4 @@ jobs:
           artifactContentType: "application/gzip"
           draft: false
           prerelease: false
-          repo: ziglang/zig
+          #repo: ziglang/zig
