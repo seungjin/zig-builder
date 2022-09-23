@@ -30,10 +30,13 @@ jobs:
         working-directory: ${{ github.workspace }}/zig/
         id: zig_source
       - name: Check source logs since 8 hours ago
-        run: echo ::set-output name=NEW_CODE ::$(date -d '8 hour ago' "+%Y-%m-%d %H:%M:%S"git log --pretty=oneline --since "$(date -d '12 hour ago' "+%Y-%m-%d %H:%M:%S")" | wc -l
+        run: echo ::set-output name=NEW_CODE::$(git log --pretty=oneline --since "$(date -d '12 hour ago' "+%Y-%m-%d %H:%M:%S")" | wc -l)
         id: zig_check_code
       - name: Check new source exist
         run: echo zig_check_code.outputs.NEW_CODE
+      - name: Stop if there is no code change
+        if: zig_check_code.outputs.NEW_CODE < 1
+
       - name: Make build directory under zig
         run: mkdir ${{ github.workspace }}/zig/build
       - name: Run cmake
