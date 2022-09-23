@@ -4,7 +4,7 @@ on:
     branches:
       - main
   schedule:
-    - cron: "* */8 * * *"
+    - cron: "0 21 * * *"
 env:
   llvmVer: 15
 jobs:
