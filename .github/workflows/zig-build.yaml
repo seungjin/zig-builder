@@ -52,7 +52,7 @@ jobs:
       - name: Copy results into release directory (lib)
         run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ env.THIS_RELEASE }}/lib/
       - name: tar/gz outcomes
-        run: tar -czvf ${{ THIS_RELEASE }}.tar.gz ${{ github.workspace }}/${{ env.THIS_RELEASE }}
+        run: tar -czvf ${{ env.THIS_RELEASE }}.tar.gz ${{ github.workspace }}/${{ env.THIS_RELEASE }}
       - uses: actions/upload-artifact@v3
         with:
           name: ${{ env.THIS_RELEASE }}.tar.gz
