@@ -80,3 +80,4 @@ jobs:
           artifactContentType: "application/gzip"
           draft: false
           prerelease: false
+          repo: ${{ github.workspace }}/zig
