@@ -24,7 +24,7 @@ jobs:
           path: zig
           ref: master
       - name: zig git hash
-        run: ::set-output name=GIT_HASH::$(git rev-parse --short=9 HEAD)
+        run: echo ::set-output name=GIT_HASH::$(git rev-parse --short=9 HEAD)
         working-directory: ${{ github.workspace }}/zig/
         id: zig_source
       - name: Make build directory under zig
