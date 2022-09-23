@@ -64,14 +64,12 @@ jobs:
       - name: Create Release
         uses: ncipollo/release-action@v1.10.0
         id: create_release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           torken: ${{ secrets.GITHUB_TOKEN }}
           name: Release ${{ steps.zig_ver.outputs.RELEASE }}
           tag: ${{ steps.zig_ver.outputs.RELEASE }}
           artifacts: ${{ github.workspace }}/${{ steps.zig_ver.outputs.RELEASE }}.tar.gz
-          artifactContentType: "tar.gz"
+          artifactContentType: "application/gzip"
           repo: ziglang/zig
           draft: false
           prerelease: false
