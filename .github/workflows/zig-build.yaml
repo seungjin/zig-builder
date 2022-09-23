@@ -44,26 +44,29 @@ jobs:
       - name: Get built zig version
         run: echo ::set-output name=ZIG_VER::$(${{ github.workspace }}/zig/build/stage3/bin/zig version)
         id: zig_ver
+      - name: Set Release name
+        env:
+          THIS_RELEASE: zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
       - name: Make zig release directory
-        run: mkdir -p ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
+        run: mkdir -p ${{ github.workspace }}/${{ THIS_RELEASE }}
       - name: Copy results into release directory (bin)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/bin ${{ github.workspace }}/${{ THIS_RELEASE }}/
       - name: Copy results into release directory (lib)
-        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}/lib/
+        run: cp -pr ${{ github.workspace }}/zig/build/stage3/lib/zig/ ${{ github.workspace }}/${{ THIS_RELEASE }}/lib/
       - name: tar/gz outcomes
-        run: tar -czvf zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}
+        run: tar -czvf ${{ THIS_RELEASE }}.tar.gz ${{ github.workspace }}/${{ THIS_RELEASE }}
       - uses: actions/upload-artifact@v3
         with:
-          name: zig-${{ steps.zig_ver.outputs.ZIG_VER }}.tar.gz
-          path: ${{ github.workspace }}/zig-${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}tar.gz
+          name: ${{ THIS_RELEASE }}.tar.gz
+          path: ${{ github.workspace }}/${{ THIS_RELEASE }}.tar.gz
       - name: release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: ${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
-          release_name: Release ${{ steps.zig_ver.outputs.ZIG_VER }}-dev.${{ github.run_number }}+${{ steps.zig_source.outputs.GIT_HASH}}
+          tag_name: ${{ THIS_RELEASE }}
+          release_name: Release ${{ THIR_RELEASE }}
           body: |
             Changes in this Release
             - First Change
